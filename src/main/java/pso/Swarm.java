@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.cloudbus.cloudsim.vms.Vm;
+
 public class Swarm {
 	private int rangeStart=0;
-	private int rangeEnd=50;
+	private int rangeEnd=30;
 	private int epochs;
 	private double bestvalue;
 	private Position bestPos;
@@ -14,12 +16,14 @@ public class Swarm {
 	public static final double LEARNING_C1 = 1.45;
 	public static final double LEARNING_C2 = 1.45;
 	private int totalParticles= 50;
+	private Vm[][] vmMatrix;
 
     public Swarm() {
     	bestPos = new Position();
     }
 	
-	public void runSwarm() {
+	public void runSwarm(Vm[][] vmMatrix) {
+		this.vmMatrix=vmMatrix;
 		List<SingleParticle> particleList = init();
 
 		double oldvalue = bestvalue;
@@ -54,9 +58,11 @@ public class Swarm {
 	}
 
 	private void updateGBest(SingleParticle particle) {
-		if (particle.getBestvalue() < bestvalue) {
+		
+		double particleBestCpu = vmMatrix[particle.getPos().getX()][particle.getPos().getY()].getCpuPercentUtilization();
+		if (particleBestCpu < bestvalue) {
 			bestPos = particle.getBestpos();
-			bestvalue = particle.getBestvalue();
+			bestvalue = particleBestCpu;
 
 		}
 	}

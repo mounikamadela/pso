@@ -26,14 +26,14 @@ public class PsoImplementation {
 		
 		Swarm swarm = new Swarm();
 
-		swarm.runSwarm();	
+		swarm.runSwarm(vmMatrix);	
 		
 		cloudSim.terminate();
 
 	}
 	
 	public static void initializeCloud() {
-		Datacenter dc = createDatacenter("DataCenter_0",10,50);
+		Datacenter dc = createDatacenter("DataCenter_0",30,30);
 		
 	}
 
