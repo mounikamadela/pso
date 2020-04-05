@@ -9,8 +9,8 @@ import org.cloudbus.cloudsim.vms.Vm;
 public class Swarm {
 	private int rangeStart=0;
 	private int rangeEnd=30;
-	private int epochs;
-	private double bestvalue;
+	private int epochs=15;
+	private double bestvalue=100;
 	private Position bestPos;
 	public static final double inertia = 0.7345;
 	public static final double LEARNING_C1 = 1.45;
@@ -26,18 +26,10 @@ public class Swarm {
 		this.vmMatrix=vmMatrix;
 		List<SingleParticle> particleList = init();
 
-		double oldvalue = bestvalue;
-
 		for (int i = 0; i < epochs; i++) {
 
-			if (bestvalue < oldvalue) {
-				System.out.println("Global best evaluation " + bestvalue);
-				oldvalue = bestvalue;
-
-			}
-
 			for (SingleParticle p : particleList) {
-				p.updatePBest();
+				p.updatePersonalBest(vmMatrix[p.getPos().getX()][p.getPos().getY()]);
 				updateGBest(p);
 			}
 
@@ -46,22 +38,20 @@ public class Swarm {
 				p.updatePosition();
 
 			}
-
 		}
 		
-        System.out.println("x = " + bestPos.getX());
-      
+        System.out.println("x = " + bestPos.getX());  
         System.out.println("y = " + bestPos.getY());
 
-        System.out.println("Final Best Evaluation: " + bestvalue);
+        System.out.println("CPU Utilization at this VM: " + bestvalue);
 
 	}
 
 	private void updateGBest(SingleParticle particle) {
 		
 		double particleBestCpu = vmMatrix[particle.getPos().getX()][particle.getPos().getY()].getCpuPercentUtilization();
-		if (particleBestCpu < bestvalue) {
-			bestPos = particle.getBestpos();
+		if (particleBestCpu <= bestvalue) {
+			bestPos = particle.getPos();
 			bestvalue = particleBestCpu;
 
 		}

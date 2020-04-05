@@ -2,22 +2,21 @@ package pso;
 
 import java.util.Random;
 
+import org.cloudbus.cloudsim.vms.Vm;
+
 public class SingleParticle {
 	private Position pos;
 	private Position velocity;
 	private Position bestpos;
-	private double bestvalue;
+	private double bestvalue=100;
 	
 	public SingleParticle(int rangeStart, int rangeEnd) {
 		pos=new Position();
 		velocity= new Position();
-		bestpos = new Position();
-		  setRandomPosition(rangeStart, rangeEnd);
+	   setRandomPosition(rangeStart, rangeEnd);
+	   bestpos=pos.clone();
 	}
 
-	void updatePBest() {
-
-	}
 
 	public Position getPos() {
 		return pos;
@@ -52,20 +51,15 @@ public class SingleParticle {
 	}
 
 	void updatePosition() {
-		this.updatePosition();
-
+		this.pos.add(velocity);
 	}
 
-	private double eval() {
-		// Evaluate VM Resources
-		return 0;
-	}
 
-	void updatePersonalBest() {
-		double eval = eval();
-		if (eval < bestvalue) {
-			bestpos = pos.clone();
-			bestvalue = eval;
+	void updatePersonalBest(Vm vm) {		
+		double particleBestCpu = vm.getCpuPercentUtilization();
+		if (particleBestCpu < bestvalue) {
+			bestvalue = particleBestCpu;
+			bestpos=pos;
 		}
 	}
 

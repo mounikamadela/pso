@@ -1,4 +1,5 @@
 package pso;
+import java.util.Random;
 
 public class Position {
 	private double limit = Double.MAX_VALUE;
@@ -6,7 +7,12 @@ public class Position {
 	int y;
 
 	public Position() {
-		x=0;y=0;
+		x=rand(0, 5);;y=rand(0, 5);
+	}
+	
+	private static int rand(int beginRange, int endRange) {
+		Random r = new java.util.Random();
+		return r.nextInt(endRange - beginRange) + beginRange;
 	}
 	
 	public Position(int x, int y) {

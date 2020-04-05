@@ -2,6 +2,8 @@ package pso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.cloudbus.cloudsim.brokers.DatacenterBroker;
 import org.cloudbus.cloudsim.brokers.DatacenterBrokerSimple;
@@ -22,6 +24,9 @@ import org.cloudbus.cloudsim.vms.Vm;
 import org.cloudbus.cloudsim.vms.VmSimple;
 import org.cloudsimplus.builders.tables.CloudletsTableBuilder;
 import org.cloudsimplus.listeners.EventInfo;
+import org.cloudsimplus.util.Log;
+
+import ch.qos.logback.classic.Level;
 
 public class PsoImplementation {
 
@@ -44,18 +49,36 @@ public class PsoImplementation {
 	private static Datacenter datacenter0;
 
 	public static void main(String[] args) {
-
+		Log.setLevel(Level.ERROR);
+		
 		PsoImplementation pso = new PsoImplementation();
-		pso.createCloud(30, 30);
+		
+		ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+		executorService.execute(new Runnable() {
+		    public void run() {				
+				pso.createCloud(30, 30);
+				
+		    }
+		});
+		
+		try {
+			Thread.sleep(1000*3);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Swarm swarm = new Swarm();
 
 		swarm.runSwarm(vmMatrix);
 
+		executorService.shutdown();
 	}
 
 	private void createCloud(int x, int y) {
 
 		simulation = new CloudSim();
+		simulation.terminateAt(1000*60*10);
 		datacenter0 = createDatacenter();
 
 		// Creates a broker that is a software acting on behalf a cloud customer to
@@ -165,5 +188,23 @@ public class PsoImplementation {
 
 		return list;
 	}
+	
+	
+    /**
+     * Simulates the dynamic arrival of a Cloudlet and a VM during simulation runtime.
+     * @param evt
+     */
+    private void createDynamicCloudletAndVm(final EventInfo evt) {
+        if((int)evt.getTime() == TIME_TO_CREATE_NEW_CLOUDLET){
+            System.out.printf("%n# Dynamically creating 1 Cloudlet and 1 VM at time %.2f%n", evt.getTime());
+            Vm vm = createVm(VM_PES*2);
+            vmList.add(vm);
+            Cloudlet cloudlet = createCloudlet();
+            cloudletList.add(cloudlet);
+
+            broker0.submitVm(vm);
+            broker0.submitCloudlet(cloudlet);
+        }
+    }
 
 }
