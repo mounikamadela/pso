@@ -8,7 +8,7 @@ import org.cloudbus.cloudsim.vms.Vm;
 
 public class Swarm {
 	private int rangeStart=0;
-	private int rangeEnd=30;
+	private int rangeEnd=29;
 	private int epochs=15;
 	private double bestvalue=100;
 	private Position bestPos;
@@ -19,7 +19,7 @@ public class Swarm {
 	private Vm[][] vmMatrix;
 
     public Swarm() {
-    	bestPos = new Position();
+    	
     }
 	
 	public void runSwarm(Vm[][] vmMatrix) {
@@ -29,8 +29,10 @@ public class Swarm {
 		for (int i = 0; i < epochs; i++) {
 
 			for (SingleParticle p : particleList) {
-				p.updatePersonalBest(vmMatrix[p.getPos().getX()][p.getPos().getY()]);
-				updateGBest(p);
+				if(p.getPos().getX()< 30 && p.getPos().getY()<30){
+					p.updatePersonalBest(vmMatrix[p.getPos().getX()][p.getPos().getY()]);
+					updateGBest(p);
+				}
 			}
 
 			for (SingleParticle p : particleList) {
@@ -40,10 +42,7 @@ public class Swarm {
 			}
 		}
 		
-        System.out.println("x = " + bestPos.getX());  
-        System.out.println("y = " + bestPos.getY());
-
-        System.out.println("CPU Utilization at this VM: " + bestvalue);
+		System.out.println("Best VM with less percentage of CPU utilization at position: ("+bestPos.getX()+"," +bestPos.getY()+")" );
 
 	}
 
@@ -51,7 +50,7 @@ public class Swarm {
 		
 		double particleBestCpu = vmMatrix[particle.getPos().getX()][particle.getPos().getY()].getCpuPercentUtilization();
 		if (particleBestCpu <= bestvalue) {
-			bestPos = particle.getPos();
+			bestPos = particle.getPos().clone();
 			bestvalue = particleBestCpu;
 
 		}
@@ -63,6 +62,7 @@ public class Swarm {
 		Position gBest = bestPos;
 		Position pos = particle.getPos();
 
+		/*
 		Random random = new Random();
 		double r1 = random.nextDouble();
 		double r2 = random.nextDouble();
@@ -82,7 +82,7 @@ public class Swarm {
 		gBest.mul(r2);
 		newVelocity.add(gBest);
 
-		particle.setVelocity(newVelocity);
+		particle.setVelocity(newVelocity);*/
 
 	}
 
