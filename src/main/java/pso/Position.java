@@ -27,6 +27,7 @@ public class Position {
 
 
 	public void setX(int x) {
+		if(x>Swarm.GRID_SIZE) this.x=Swarm.GRID_SIZE-3;
 		this.x = x;
 	}
 
@@ -37,6 +38,7 @@ public class Position {
 
 
 	public void setY(int y) {
+		if(y>Swarm.GRID_SIZE) this.y=Swarm.GRID_SIZE-3;
 		this.y = y;
 	}
 	

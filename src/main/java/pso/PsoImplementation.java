@@ -1,6 +1,7 @@
 package pso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,10 +34,15 @@ public class PsoImplementation {
 	static CloudSim cloudSim;
 	static Vm[][] vmMatrix;
 	static List<Vm> vmList;
+	
+	private static final int THREAD_SIZE=800;
+	
+	
 	private static final double TIME_TO_CREATE_NEW_CLOUDLET = 15;
 	private static final int HOSTS = 900;
 	private static final int HOST_PES = 8;
 
+	
 	private static final int VM_PES = 4;
 
 	private static final int CLOUDLETS = 4;
@@ -51,13 +57,14 @@ public class PsoImplementation {
 	public static void main(String[] args) {
 		Log.setLevel(Level.ERROR);
 		
+		
 		PsoImplementation pso = new PsoImplementation();
 		
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 		executorService.execute(new Runnable() {
 		    public void run() {				
-				pso.createCloud(30, 30);
+				pso.createCloud(Swarm.GRID_SIZE, Swarm.GRID_SIZE);
 				
 		    }
 		});
@@ -70,7 +77,7 @@ public class PsoImplementation {
 		}
 		Swarm swarm = new Swarm();
 
-		swarm.runSwarm(vmMatrix);
+		swarm.runSwarm(vmMatrix,THREAD_SIZE);
 
 		executorService.shutdown();
 	}

@@ -71,6 +71,14 @@ public class SingleParticle {
 	 private void setRandomPosition (int beginRange, int endRange) {
 	        int x = rand(beginRange, endRange);
 	        int y = rand(beginRange, endRange);
+	        if(x>Swarm.GRID_SIZE)
+	        {
+	        	x=Swarm.GRID_SIZE-3;
+	        }
+	        if(y>Swarm.GRID_SIZE)
+	        {
+	        	y=Swarm.GRID_SIZE-3;
+	        }
 	        pos.setX(x);
 	        pos.setY(y);
 	    }

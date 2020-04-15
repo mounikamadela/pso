@@ -1,15 +1,18 @@
 package pso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.cloudbus.cloudsim.vms.Vm;
 
 public class Swarm {
+	public static final int GRID_SIZE=30;
 	private int rangeStart=0;
-	private int rangeEnd=29;
-	private int epochs=15;
+	private int rangeEnd=GRID_SIZE-1;
+	private int epochs=50;
 	private double bestvalue=100;
 	private Position bestPos;
 	public static final double inertia = 0.7345;
@@ -21,15 +24,14 @@ public class Swarm {
     public Swarm() {
     	
     }
-	
-	public void runSwarm(Vm[][] vmMatrix) {
-		this.vmMatrix=vmMatrix;
-		List<SingleParticle> particleList = init();
-
-		for (int i = 0; i < epochs; i++) {
+    
+    public void runSingleSwarm(List<SingleParticle> particleList) {
+    	Date startTime = new Date();
+		System.out.println("Starting time:"+startTime);
+    	for (int i = 0; i < epochs; i++) {
 
 			for (SingleParticle p : particleList) {
-				if(p.getPos().getX()< 30 && p.getPos().getY()<30){
+				if(p.getPos().getX()< GRID_SIZE && p.getPos().getY()<GRID_SIZE){
 					p.updatePersonalBest(vmMatrix[p.getPos().getX()][p.getPos().getY()]);
 					updateGBest(p);
 				}
@@ -42,7 +44,28 @@ public class Swarm {
 			}
 		}
 		
+		Date endTime = new Date();
+		
+		System.out.println("Time taken for evaluation:" + (endTime.getTime()-startTime.getTime()));
 		System.out.println("Best VM with less percentage of CPU utilization at position: ("+bestPos.getX()+"," +bestPos.getY()+")" );
+
+    }
+	
+	public void runSwarm(Vm[][] vmMatrix, int threadSize) {
+	
+		this.vmMatrix=vmMatrix;
+	
+
+		ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+		for (int i=0;i<threadSize; i++) {
+		executorService.execute(new Runnable() {
+		    public void run() {		
+		    	List<SingleParticle> particleList = init();
+		    	runSingleSwarm(particleList);
+		    }
+		});
+		}
 
 	}
 
