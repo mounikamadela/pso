@@ -35,7 +35,7 @@ public class PsoImplementation {
 	static Vm[][] vmMatrix;
 	static List<Vm> vmList;
 	
-	private static final int THREAD_SIZE=800;
+	private static final int THREAD_SIZE=10;
 	
 	
 	private static final double TIME_TO_CREATE_NEW_CLOUDLET = 15;
