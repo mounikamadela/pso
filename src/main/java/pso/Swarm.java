@@ -27,7 +27,7 @@ public class Swarm {
     
     public void runSingleSwarm(List<SingleParticle> particleList) {
     	Date startTime = new Date();
-		System.out.println("Starting time:"+startTime);
+		System.out.println(Thread.currentThread() +" - Starting time:"+startTime);
     	for (int i = 0; i < epochs; i++) {
 
 			for (SingleParticle p : particleList) {
@@ -46,8 +46,8 @@ public class Swarm {
 		
 		Date endTime = new Date();
 		
-		System.out.println("Time taken for evaluation:" + (endTime.getTime()-startTime.getTime()));
-		System.out.println("Best VM with less percentage of CPU utilization at position: ("+bestPos.getX()+"," +bestPos.getY()+")" );
+		System.out.println(Thread.currentThread() +" - Time taken for evaluation:"  +  (endTime.getTime()-startTime.getTime()));
+		System.out.println( Thread.currentThread()+" - Best VM with less percentage of CPU utilization at position: ("+bestPos.getX()+"," +bestPos.getY()+")" );
 
     }
 	

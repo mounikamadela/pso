@@ -100,9 +100,9 @@ public class PsoImplementation {
 		simulation.addOnClockTickListener(this::createDynamicCloudlet);
 		simulation.start();
 
-		final List<Cloudlet> finishedCloudlets = broker0.getCloudletFinishedList();
-		new CloudletsTableBuilder(finishedCloudlets).build();
-
+		//final List<Cloudlet> finishedCloudlets = broker0.getCloudletFinishedList();
+		//new CloudletsTableBuilder(finishedCloudlets).build();
+		System.out.println("All threads are finished. Terminating simulation");
 	}
 
 	private Vm createVm(final int pes) {
