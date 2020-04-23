@@ -3,6 +3,7 @@ package pso;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -85,27 +86,24 @@ public class Swarm {
 		Position gBest = bestPos;
 		Position pos = particle.getPos();
 
-		/*
+		
 		Random random = new Random();
 		double r1 = random.nextDouble();
 		double r2 = random.nextDouble();
 
 		Position newVelocity = oldVelocity.clone();
-		newVelocity.mul(inertia);
-
+		
 		// The second product of the formula.
 		pBest.sub(pos);
 		pBest.mul(LEARNING_C1);
 		pBest.mul(r1);
-		newVelocity.add(pBest);
+		
 
 		// The third product of the formula.
 		gBest.sub(pos);
 		gBest.mul(LEARNING_C2);
 		gBest.mul(r2);
 		newVelocity.add(gBest);
-
-		particle.setVelocity(newVelocity);*/
 
 	}
 

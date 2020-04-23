@@ -102,7 +102,7 @@ public class PsoImplementation {
 
 		//final List<Cloudlet> finishedCloudlets = broker0.getCloudletFinishedList();
 		//new CloudletsTableBuilder(finishedCloudlets).build();
-		System.out.println("All threads are finished. Terminating simulation");
+		System.out.println("All threads are finished. Terminating simulati");
 	}
 
 	private Vm createVm(final int pes) {
